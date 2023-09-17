@@ -1,11 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import axios from 'axios'
-import { NextPageContext } from 'next'
 
-const Page = ( { bienvenida } ) => {
+async function getData() {
+  const res = await fetch('http://127.0.0.1:8080/bienvenida', { cache: 'no-store' });
+  return res.json();
+};
 
-  console.log(bienvenida);
+export default async function Page() {
+
+  const data = await getData();
+
   /* if(error){
     return 'Problema al cargar los datos de bienvenida.';
   }
@@ -63,7 +68,7 @@ const Page = ( { bienvenida } ) => {
 
                 <div className="text-center">
                   <Image
-                  src="/logo.png"
+                  src={data.img}
                   height="200"
                   width="200"
                   alt=""
@@ -71,8 +76,8 @@ const Page = ( { bienvenida } ) => {
                   className="img-thumbnail"
                   />
                 </div>
-                <h2 className="text-center">Bienvenido Candidato 1</h2>
-                <p className="text-center">Versión: 0.0.1</p>
+                <h2 className="text-center"> {data.bienvenida}</h2>
+                <p className="text-center">Versión: {data.version}</p>
 
             </div>
           </div>
@@ -81,16 +86,3 @@ const Page = ( { bienvenida } ) => {
     </main>
   </>)
 }
-
-Page.getInitialProps = async () => {
-  try {
-    const res = await axios.get('http://localhost:8080/bienvenida');
-    const bienvenida = res.data;
-    console.log(res);
-    return { bienvenida };
-  } catch (error) {
-    return { error };
-  }
-};
-
-export default Page;
