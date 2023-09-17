@@ -26,6 +26,8 @@ export default function Proveedores() {
       processing: true,
       serverSide: true,
       order:[[1,"asc"]],
+      ordering: false,
+      searching: false,
       language: {
         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
       },
